@@ -110,11 +110,11 @@ static void render()
 	prog->bind();
 	double t = glfwGetTime();
 	MV->pushMatrix();
-	MV->translate(0.0, -0.4, 0.0);
+	MV->translate(0.0f, -0.4f, 0.0f);
 	
-	float c = cos(t);
-	float s = sin(t);
-	double tmp[16] = { c, 0, s, c,
+	double c = cos(t);
+	double s = sin(t);
+	double tmp[16] = { c, 0, s, 0,
 					   0, 1, 0, 0,
 					  -s, 0, c, 0,
 					   0, 0, 0, 1 };
@@ -124,7 +124,7 @@ static void render()
 	MV->multMatrix(M);
 
 	float val = 0;
-	MV->rotate(t, 0.0, 1.0, val);
+	MV->rotate( (float) t, 0.0f, 1.0f, val);
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, &P->topMatrix()[0][0]);
 	glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, &MV->topMatrix()[0][0]);
 	shape->draw(prog);
