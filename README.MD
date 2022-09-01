@@ -1,7 +1,7 @@
 Setting up the development environment
 ======================================
 
-_IMPORTANT!_ In this course, your project must be cross-platform. Follow these guidelines.
+_IMPORTANT!_ In this course, your code must be cross-platform. Follow these guidelines.
 
 *   Always use CMake to perform an “out-of-source” build, which means that the binary files will not be in the same directory as the source files.
 *   When adding new `.cpp` and `.h` files, always add them manually to the `src` folder and rerun CMake. Do not use the “add” feature of your IDE to add files to your project.

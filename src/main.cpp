@@ -21,8 +21,18 @@ using namespace std;
 GLFWwindow *window; // Main application window
 string RES_DIR = ""; // Where data files live
 shared_ptr<Program> prog;
-shared_ptr<Program> progIM; // immediate mode
+shared_ptr<Program> prog2; // for drawing with colours
 shared_ptr<Shape> shape;
+
+GLuint posBufID; // position buffer for drawing a line loop
+GLuint colBufID;
+GLuint aPosLocation = 0; // location set in col_vert.glsl (or can be queried)
+const GLuint NumVertices = 4;
+GLfloat vertices[NumVertices][3] = {
+					{ -1, -1,  0 },
+					{  1, -1,  0 },
+					{  1,  1,  0 },
+					{ -1,  1,  0 } };
 
 static void error_callback(int error, const char *description)
 {
@@ -71,18 +81,25 @@ static void init()
 	prog->addAttribute("aNor");
 	prog->setVerbose(false);
 	
-	progIM = make_shared<Program>();
-	progIM->setVerbose(true);
-	progIM->setShaderNames(RES_DIR + "simple_vert.glsl", RES_DIR + "simple_frag.glsl");
-	progIM->init();
-	progIM->addUniform("P");
-	progIM->addUniform("MV");
-	progIM->setVerbose(false);
+	prog2 = make_shared<Program>();
+	prog2->setVerbose(true);
+	prog2->setShaderNames(RES_DIR + "col_vert.glsl", RES_DIR + "col_frag.glsl");
+	prog2->init();
+	prog2->addUniform("P");
+	prog2->addUniform("MV");
+	prog2->addUniform("col");
+	prog2->addAttribute("aPos");
+	prog2->setVerbose(false);
 	
 	// If there were any OpenGL errors, this will print something.
 	// You can intersperse this line in your code to find the exact location
 	// of your OpenGL error.
 	GLSL::checkError(GET_FILE_LINE);
+
+	// Create a buffers for doing some line drawing
+	glGenBuffers(1, &posBufID);
+	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),	vertices, GL_STATIC_DRAW);
 }
 
 static void render()
@@ -112,19 +129,17 @@ static void render()
 	MV->pushMatrix();
 	MV->translate(0.0f, -0.4f, 0.0f);
 	
-	double c = cos(t);
-	double s = sin(t);
-	double tmp[16] = { c, 0, s, 0,
-					   0, 1, 0, 0,
-					  -s, 0, c, 0,
-					   0, 0, 0, 1 };
-	glm::mat4 M = glm::make_mat4(tmp);
-	M = glm::transpose(M);
+	//double c = cos(t);
+	//double s = sin(t);
+	//double tmp[16] = { c, 0, s, 0,
+	//				   0, 1, 0, 0,
+	//				  -s, 0, c, 0,
+	//				   0, 0, 0, 1 };
+	//glm::mat4 M = glm::make_mat4(tmp);
+	//M = glm::transpose(M);
+	//MV->multMatrix(M);
 
-	MV->multMatrix(M);
-
-	float val = 0;
-	MV->rotate( (float) t, 0.0f, 1.0f, val);
+	MV->rotate( (float) t, 0, 1, 0 );
 	glUniformMatrix4fv(prog->getUniform("P"), 1, GL_FALSE, &P->topMatrix()[0][0]);
 	glUniformMatrix4fv(prog->getUniform("MV"), 1, GL_FALSE, &MV->topMatrix()[0][0]);
 	shape->draw(prog);
@@ -132,20 +147,17 @@ static void render()
 	prog->unbind();
 	
 	// Draw lines.
-	progIM->bind();
+	prog2->bind();
 	MV->pushMatrix();
-	glUniformMatrix4fv(progIM->getUniform("P"), 1, GL_FALSE, &P->topMatrix()[0][0]);
-	glUniformMatrix4fv(progIM->getUniform("MV"), 1, GL_FALSE, &MV->topMatrix()[0][0]);
-	glColor3f(0.0f, 0.0f, 0.0f);
-	glBegin(GL_LINE_STRIP);
-	glVertex3d(-1.0, -1.0, 0.0);
-	glVertex3d( 1.0, -1.0, 0.0);
-	glVertex3d( 1.0,  1.0, 0.0);
-	glVertex3d(-1.0,  1.0, 0.0);
-	glVertex3d(-1.0, -1.0, 0.0);
-	glEnd();
+	glUniformMatrix4fv(prog2->getUniform("P"), 1, GL_FALSE, &P->topMatrix()[0][0]);
+	glUniformMatrix4fv(prog2->getUniform("MV"), 1, GL_FALSE, &MV->topMatrix()[0][0]);
+	glUniform3f(prog2->getUniform("col"), 1, 0, 0);
+	glEnableVertexAttribArray(aPosLocation);
+	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
+	glVertexAttribPointer(aPosLocation, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glDrawArrays(GL_LINE_LOOP, 0, NumVertices);
 	MV->popMatrix();
-	progIM->unbind();
+	prog2->unbind();
 
 	// Pop matrix stacks.
 	MV->popMatrix();
