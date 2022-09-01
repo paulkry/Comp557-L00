@@ -62,10 +62,10 @@ First, download (clone) the repository, and then extract the zip file to a suita
             ![](images/WinEnv3.jpg)
             
     *   To test your environment variables, open a PowerShell and run the following:
-        
-              > $env:GLM_INCLUDE_DIR
-              > $env:GLFW_DIR
-              > $env:GLEW_DIR
+     
+            $env:GLM_INCLUDE_DIR
+            $env:GLFW_DIR
+            $env:GLEW_DIR
         
         Make sure you see the correct paths in the output.
         
@@ -102,14 +102,14 @@ This should work for Big Sur and Monterey. Earlier versions may or may not work.
         
     *   These environment variables will be set the next time you login. To make this change take effect in your current terminal, run the following
         
-              > source ~/.zshrc    # if you're using zsh
-              > source ~/.bashrc   # if you're using bash
+              source ~/.zshrc    # if you're using zsh
+              source ~/.bashrc   # if you're using bash
         
     *   To test your environment variables, run the following in the terminal:
         
-              > echo $GLM_INCLUDE_DIR
-              > echo $GLFW_DIR
-              > echo $GLEW_DIR
+              echo $GLM_INCLUDE_DIR
+              echo $GLFW_DIR
+              echo $GLEW_DIR
         
         Make sure you see the correct paths in the output.
         
@@ -120,14 +120,14 @@ This is for Ubuntu Linux 20.04.1 LTS. Setting up other distributions should be s
 
 1.  You’ll need the following if you don’t have them already.
     
-         > sudo apt-get update
-         > sudo apt-get install g++
-         > sudo apt-get install cmake
-         > sudo apt-get install freeglut3-dev
-         > sudo apt-get install libxrandr-dev
-         > sudo apt-get install libxi-dev
-         > sudo apt-get install libxinerama-dev
-         > sudo apt-get install libxcursor-dev
+         sudo apt-get update
+         sudo apt-get install g++
+         sudo apt-get install cmake
+         sudo apt-get install freeglut3-dev
+         sudo apt-get install libxrandr-dev
+         sudo apt-get install libxi-dev
+         sudo apt-get install libxinerama-dev
+         sudo apt-get install libxcursor-dev
     
     We are going to install GLM, GLFW, and GLEW manually. (You may also use a package manager to get these libraries, but please do not modify the CMake file.)
     
@@ -148,14 +148,13 @@ This is for Ubuntu Linux 20.04.1 LTS. Setting up other distributions should be s
         Set these variables to point to the directories that you extracted GLM, GLFW, and GLEW to. These directories should be the “root” directories of the libraries – i.e., they should contain such items as `include/`, `src/`, `doc/`, `lib/`, `readme`, etc.
         
     *   These environment variables will be set the next time you login. To make this change take effect in your current terminal, run the following
-        
-              > source ~/.profile
+
+            source ~/.profile
 
     *   To test your environment variables, run the following in the terminal:
-        
-              > echo $GLM_INCLUDE_DIR
-              > echo $GLFW_DIR
-              > echo $GLEW_DIR
+            echo $GLM_INCLUDE_DIR
+            echo $GLFW_DIR
+            echo $GLEW_DIR
         
         Make sure you see the correct paths in the output.
         
@@ -196,12 +195,12 @@ This is for Ubuntu Linux 20.04.1 LTS. Setting up other distributions should be s
     
 1.  In the folder that contains CMakeLists.txt, run the following.
     
-         > mkdir build
-         > cd build
+        mkdir build
+        cd build
     
     Then run the following _from the build folder_.
     
-         > cmake -G Xcode ..
+        cmake -G Xcode ..
     
     This will generate `L00.xcodeproj` project that you can open with Xcode.
     
@@ -231,22 +230,22 @@ Run with Makefile
     
 1.  In the folder that contains CMakeLists.txt, run the following.
     
-         > mkdir build
-         > cd build
+        mkdir build
+        cd build
     
     Then run the following _from the build folder_.
     
-         > cmake ..
+        cmake ..
     
     This will generate a Makefile that you can use to compile your code.
     
 2.  To compile the code, run the generated Makefile.
     
-         > make -j4
+        make -j4
     
     The `-j` argument speeds up the compilation by multithreading the compiler. This will generate an executable, which you can run by typing
     
-         > ./L00 ../resources
+        ./L00 ../resources
     
     To build in release mode:
     
