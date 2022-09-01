@@ -16,12 +16,10 @@ First, download (clone) the repository, and then extract the zip file to a suita
 
 *   Windows
     *   [Install prerequisite software on Windows](#setting-up-windows)
-    *   Option A: [Run with Visual Studio](#run-with-visual-studio)
-    *   Option B: [Run with Makefile](#run-with-makefile)
+    *   [Run with Visual Studio](#run-with-visual-studio)
 *   macOS
     *   [Install prerequisite software on macOS](#setting-up-macos)
-    *   Option A: [Run with Xcode](#run-with-xcode)
-    *   Option B: [Run with Makefile](#run-with-makefile)
+    *   [Run with Xcode](#run-with-xcode)
 *   Linux
     *   [Install prerequisite software on Linux](#setting-up-linux)
     *   [Run with Makefile](#run-with-makefile)
