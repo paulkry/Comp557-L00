@@ -24,8 +24,8 @@ shared_ptr<Program> prog;
 shared_ptr<Program> prog2; // for drawing with colours
 shared_ptr<Shape> shape;
 
+GLuint vao;	
 GLuint posBufID; // position buffer for drawing a line loop
-GLuint colBufID;
 GLuint aPosLocation = 0; // location set in col_vert.glsl (or can be queried)
 const GLuint NumVertices = 4;
 GLfloat vertices[NumVertices][3] = {
@@ -97,9 +97,13 @@ static void init()
 	GLSL::checkError(GET_FILE_LINE);
 
 	// Create a buffers for doing some line drawing
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
 	glGenBuffers(1, &posBufID);
 	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices),	vertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(aPosLocation);
+	glVertexAttribPointer(aPosLocation, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 }
 
 static void render()
@@ -152,9 +156,7 @@ static void render()
 	glUniformMatrix4fv(prog2->getUniform("P"), 1, GL_FALSE, &P->topMatrix()[0][0]);
 	glUniformMatrix4fv(prog2->getUniform("MV"), 1, GL_FALSE, &MV->topMatrix()[0][0]);
 	glUniform3f(prog2->getUniform("col"), 1, 0, 0);
-	glEnableVertexAttribArray(aPosLocation);
-	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
-	glVertexAttribPointer(aPosLocation, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glBindVertexArray(vao);
 	glDrawArrays(GL_LINE_LOOP, 0, NumVertices);
 	MV->popMatrix();
 	prog2->unbind();
@@ -180,11 +182,14 @@ int main(int argc, char **argv)
 	if(!glfwInit()) {
 		return -1;
 	}
+    
 	// https://en.wikipedia.org/wiki/OpenGL
-	// glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	// glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-	// glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	// glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // hint to use OpenGL 4.1 on all paltforms
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    
 	// Create a windowed mode window and its OpenGL context.
 	window = glfwCreateWindow(640, 480, "YOUR NAME", NULL, NULL);
 	if(!window) {

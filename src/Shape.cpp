@@ -10,6 +10,7 @@
 using namespace std;
 
 Shape::Shape() :
+	vao(0),
 	posBufID(0),
 	norBufID(0),
 	texBufID(0)
@@ -68,6 +69,8 @@ void Shape::loadMesh(const string &meshName)
 
 void Shape::init()
 {
+	glGenVertexArrays(1, &vao);
+
 	// Send the position array to the GPU
 	glGenBuffers(1, &posBufID);
 	glBindBuffer(GL_ARRAY_BUFFER, posBufID);
@@ -95,6 +98,8 @@ void Shape::init()
 
 void Shape::draw(const shared_ptr<Program> prog) const
 {
+	glBindVertexArray(vao);
+
 	// Bind position buffer
 	int h_pos = prog->getAttribute("aPos");
 	glEnableVertexAttribArray(h_pos);
