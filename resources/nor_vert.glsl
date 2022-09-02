@@ -1,4 +1,4 @@
-#version 430 core
+#version 410 core
 in vec4 aPos;
 in vec3 aNor;
 uniform mat4 P;
