@@ -180,11 +180,14 @@ int main(int argc, char **argv)
 	if(!glfwInit()) {
 		return -1;
 	}
+    
 	// https://en.wikipedia.org/wiki/OpenGL
-	 glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	 glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-	 glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	 glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    // hint to use OpenGL 4.1 on all paltforms
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+    
 	// Create a windowed mode window and its OpenGL context.
 	window = glfwCreateWindow(640, 480, "YOUR NAME", NULL, NULL);
 	if(!window) {
