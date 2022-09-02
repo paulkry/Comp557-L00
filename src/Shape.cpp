@@ -95,12 +95,6 @@ void Shape::init()
 
 void Shape::draw(const shared_ptr<Program> prog) const
 {
-#ifdef __APPLE__
-    GLuint vao;
-    glGenVertexArrays(1, &vao);
-    glBindVertexArray(vao);
-    GLSL::checkError(GET_FILE_LINE);
-#endif
 	// Bind position buffer
 	int h_pos = prog->getAttribute("aPos");
 	glEnableVertexAttribArray(h_pos);
