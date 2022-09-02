@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include "GLSL.h"
 
 class Program;
 
@@ -28,9 +29,10 @@ private:
 	std::vector<float> posBuf;
 	std::vector<float> norBuf;
 	std::vector<float> texBuf;
-	unsigned posBufID;
-	unsigned norBufID;
-	unsigned texBufID;
+	GLuint vao;
+	GLuint posBufID;
+	GLuint norBufID;
+	GLuint texBufID;
 };
 
 #endif
