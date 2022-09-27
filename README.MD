@@ -210,6 +210,10 @@ This is for Ubuntu Linux 20.04.1 LTS. Setting up other distributions should be s
     
         cmake -G Xcode ..
     
+    OR, if you are using a Mac with a M1/M2 chip:
+    
+        cmake -G Xcode -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 ..
+    
     This will generate `L00.xcodeproj` project that you can open with Xcode.
     
 2.  Open `L00.xcodeproj` with Xcode.
