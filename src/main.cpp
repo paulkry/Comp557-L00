@@ -112,6 +112,10 @@ static void render()
 	int width, height;
 	glfwGetFramebufferSize(window, &width, &height);
 	float aspect = width/(float)height;
+	if (isnan(aspect))
+	{
+		aspect = 0;
+	}
 	glViewport(0, 0, width, height);
 
 	// Clear framebuffer.
