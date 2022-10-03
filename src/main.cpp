@@ -18,6 +18,8 @@
 
 using namespace std;
 
+int refreshRate = 60;
+
 GLFWwindow *window; // Main application window
 string RES_DIR = ""; // Where data files live
 shared_ptr<Program> prog;
@@ -212,7 +214,10 @@ int main(int argc, char **argv)
 	cout << "OpenGL version: " << glGetString(GL_VERSION) << endl;
 	cout << "GLSL version: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 	// Set vsync.
-	glfwSwapInterval(1);
+	GLFWmonitor* monitor = glfwGetPrimaryMonitor();
+	const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+	refreshRate = mode->refreshRate;
+	glfwSwapInterval((int)((float)(refreshRate) / 60.0));
 	// Set keyboard callback.
 	glfwSetKeyCallback(window, key_callback);
 	// Initialize scene.
